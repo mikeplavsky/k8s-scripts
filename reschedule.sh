@@ -1,7 +1,8 @@
 NODE=$1
+PATTERN=$2
 
 res=$(kubectl describe node $NODE | 
-    grep rest | 
+    grep $PATTERN | 
     tail -n 1)
  
 if [ ${#res} -eq 0 ];then
@@ -19,33 +20,35 @@ deployment=$(echo $res |
 echo $namespace
 echo $deployment
 
+NUM=1
+
+function get_pods_num {
+
+    NUM=$(kubectl get \
+          deployment $deployment --namespace \
+          $namespace --no-headers | awk '{print $5}')
+
+    echo `date`" Pods $NUM"
+
+} 
+
 kubectl scale deployment \
     --replicas=0 $deployment --namespace=$namespace
 
-NUM=1
 while [ $NUM -gt 0 ];do
 
-    NUM=$(kubectl get \
-        deployment $deployment --namespace $namespace --no-headers | 
-        awk '{print $5}')
-
+    get_pods_num
     sleep 1
-    echo "Pods $NUM"
 
 done;
-
 
 kubectl scale deployment \
     --replicas=1 $deployment --namespace=$namespace
 
 while [ $NUM -eq 0 ];do
 
-    NUM=$(kubectl get \
-        deployment $deployment --namespace $namespace --no-headers | 
-        awk '{print $5}')
-
-    sleep 1
-    echo "Pods $NUM"
+    get_pods_num
+    sleep 5
 
 done;
 
