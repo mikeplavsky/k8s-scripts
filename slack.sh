@@ -14,12 +14,12 @@ date
 
 KUBE=$(kubectl get node && kubectl top node && etcdctl cluster-health)
 STATUS=":red_circle:"
-NOTIFICATION="@channel "
+NOTIFICATION='<!channel> '
 
 BAD=$(echo $KUBE | grep -E "Unready|unhealthy")
 if [ ${#BAD} -eq 0 ];then
     STATUS=":green_apple:"
-    NOTIFICATION=""
+    NOTIFICATION=''
 fi
 
 RES=$(date && echo ${NOTIFICATION}$STATUS" "*$NAME* && echo "${KUBE}")
