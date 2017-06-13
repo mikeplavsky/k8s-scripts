@@ -12,7 +12,7 @@ while true; do
 
 date
 
-KUBE=$(kubectl get node && etcdctl cluster-health)
+KUBE=$(kubectl get node && kubectl top node && etcdctl cluster-health)
 STATUS=":red_circle:"
 
 BAD=$(echo $KUBE | grep -E "Unready|unhealthy")
