@@ -14,13 +14,15 @@ date
 
 KUBE=$(kubectl get node && kubectl top node && etcdctl cluster-health)
 STATUS=":red_circle:"
+NOTIFICATION="@channel "
 
 BAD=$(echo $KUBE | grep -E "Unready|unhealthy")
 if [ ${#BAD} -eq 0 ];then
     STATUS=":green_apple:"
+    NOTIFICATION=""
 fi
 
-RES=$(date && echo $STATUS" "*$NAME* && echo "${KUBE}")
+RES=$(date && echo ${NOTIFICATION}$STATUS" "*$NAME* && echo "${KUBE}")
 curl -XPOST $SLACK_URL -d "{\"text\":\"$RES\"}";
 
 sleep $INTERVAL
