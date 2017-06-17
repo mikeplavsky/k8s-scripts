@@ -1,11 +1,9 @@
-NAME=$1
-NUM=$2
+NODES=`kubectl get nodes --no-headers | 
+    awk '{print $1}' | 
+    grep agent`
 
-for i in `seq 0 $NUM`; do
-
-   M=$NAME$i
-
-   echo $M
-   kubectl describe node $M | tail -n 2
-   
+for n in $NODES;do
+   echo $n
+   kubectl describe node $n | tail -n 2
 done
+
