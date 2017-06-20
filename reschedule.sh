@@ -1,3 +1,4 @@
+#it assumes there is a deployment for pod
 NODE=$1
 PATTERN=$2
 
