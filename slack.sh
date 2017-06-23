@@ -13,7 +13,6 @@ while true; do
 date
 
 KUBE=$(kubectl get node && \
-    ./nodes.sh && \
     etcdctl cluster-health)
 
 STATUS=":red_circle:"
