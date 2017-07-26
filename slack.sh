@@ -13,7 +13,8 @@ while true; do
 date
 
 KUBE=$(kubectl get node && \
-    etcdctl cluster-health)
+    etcdctl cluster-health && \
+    ./nodes_disk.sh)
 
 STATUS=":red_circle:"
 NOTIFICATION='<!channel> '
