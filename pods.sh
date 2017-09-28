@@ -4,7 +4,7 @@ PODS=`kubectl get pods --all-namespaces -o json | jq '[.items[] | { name: .metad
 
 if [ ${#PODS} -gt 2 ]; then
   echo "unhealthy pods: "
-  echo $PODS
+  echo $PODS | jq -r '.[] | "\(.node)\t\(.total) pods"'
 else 
   echo "All pods are healthy"
 fi
